@@ -1,0 +1,40 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+package "Model" {
+    class Case{
+        -String valeur
+        -Boolean isModifiable
+        +Boolean getIsModifiable()
+        +void setIsModifiable()
+        +String getValeur()
+        +void setValeur(String newVal)
+        +Case(String newVal)
+    }
+
+    class Sudoku{
+        -ArraysList<Case> cases
+        +Sudoku()
+        +findCase(Case case)
+    }
+
+    interface ISudoku{
+        +Sudoku getSudokuCorrected()
+        +void generateSudoku()
+    }
+}
+
+package "View"{
+
+}
+
+package "Controller"{
+
+}
+
+
+Sudoku "1" *-- "0..81" Case : contains
+Sudoku ..|> ISudoku : implements
+
+
+@enduml
