@@ -26,10 +26,11 @@ package "Model" {
 
 package "View"{
 
+
 }
 
 package "Controller"{
-
+    class ControllerSudoku
 }
 
 
