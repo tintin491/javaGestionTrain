@@ -2,26 +2,85 @@
 'https://plantuml.com/sequence-diagram
 
 package "Model" {
-    class Case{
-        -String valeur
-        -Boolean isModifiable
-        +Boolean getIsModifiable()
-        +void setIsModifiable()
-        +String getValeur()
-        +void setValeur(String newVal)
-        +Case(String newVal)
+    ' Définition des classes principales
+    class Train {
+        - String id
+        - String type
+        - int capacite
+        - boolean enService
+        + Train(id: String, type: String, capacite: int)
+        + mettreHorsService(): void
+        + toString(): String
     }
 
-    class Sudoku{
-        -ArraysList<Case> cases
-        +Sudoku()
-        +findCase(Case case)
+    class Gare {
+        - String nom
+        - String adresse
+        - List<Train> trains
+        + ajouterTrain(train: Train): void
+        + listerTrains(): List<Train>
     }
 
-    interface ISudoku{
-        +Sudoku getSudokuCorrected()
-        +void generateSudoku()
+    class Passager {
+        - String nom
+        - String prenom
+        - String email
+        - List<Billet> historiqueBillets
+        + ajouterBillet(billet: Billet): void
+        + toString(): String
     }
+
+    class Billet {
+        - String id
+        - Voyage voyage
+        - Passager passager
+        - double prix
+        + Billet(id: String, voyage: Voyage, passager: Passager, prix: double)
+        + toString(): String
+    }
+
+    class Voyage {
+        - Train train
+        - Gare gareDepart
+        - Gare gareArrivee
+        - LocalDateTime horaire
+        + Voyage(train: Train, gareDepart: Gare, gareArrivee: Gare, horaire: LocalDateTime)
+        + toString(): String
+    }
+
+    class Horaire {
+        - Train train
+        - Gare gare
+        - LocalDateTime heureDepart
+        - LocalDateTime heureArrivee
+        + Horaire(train: Train, gare: Gare, heureDepart: LocalDateTime, heureArrivee: LocalDateTime)
+        + toString(): String
+    }
+
+    class Employe {
+        - String id
+        - String nom
+        - String poste
+        + afficherRole(): void
+    }
+
+    class Conducteur extends Employe {
+        - String permis
+        + afficherRole(): void
+    }
+
+    class Guichetier extends Employe {
+        + afficherRole(): void
+    }
+
+    Gare "1" *-- "*" Train : contient
+    Voyage "1" *-- "1" Train : utilise
+    Voyage "1" *-- "1" Gare : départ/arrivée
+    Billet "1" *-- "1" Voyage : correspond à
+    Billet "1" *-- "1" Passager : réservé par
+    Conducteur -|> Employe : hérite
+    Guichetier -|> Employe : hérite
+
 }
 
 package "View"{
@@ -30,12 +89,20 @@ package "View"{
 }
 
 package "Controller"{
-    class ControllerSudoku
+        class GestionGare {
+            + ajouterTrain(train: Train): void
+            + ajouterGare(gare: Gare): void
+            + afficherTrains(): void
+        }
+
+        class GestionReservation {
+            + reserverBillet(billet: Billet): void
+            + afficherReservations(): void
+        }
+
+        class GestionEmployes {
+            + ajouterEmploye(employe: Employe): void
+            + afficherEmployes(): void
+        }
 }
-
-
-Sudoku "1" *-- "0..81" Case : contains
-Sudoku ..|> ISudoku : implements
-
-
 @enduml
