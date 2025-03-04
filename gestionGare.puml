@@ -27,6 +27,7 @@ package "Model" {
         - String email
         - List<Billet> historiqueBillets
         + ajouterBillet(billet: Billet): void
+        + annulerBillet(billet: Biller): void
         + toString(): String
     }
 
@@ -43,17 +44,17 @@ package "Model" {
         - Train train
         - Gare gareDepart
         - Gare gareArrivee
-        - LocalDateTime horaire
-        + Voyage(train: Train, gareDepart: Gare, gareArrivee: Gare, horaire: LocalDateTime)
+        - DateTime horaire
+        + Voyage(train: Train, gareDepart: Gare, gareArrivee: Gare, horaire: DateTime)
         + toString(): String
     }
 
     class Horaire {
         - Train train
         - Gare gare
-        - LocalDateTime heureDepart
-        - LocalDateTime heureArrivee
-        + Horaire(train: Train, gare: Gare, heureDepart: LocalDateTime, heureArrivee: LocalDateTime)
+        - DateTime heureDepart
+        - DateTime heureArrivee
+        + Horaire(train: Train, gare: Gare, heureDepart: DateTime, heureArrivee: DateTime)
         + toString(): String
     }
 
@@ -98,11 +99,13 @@ package "Controller"{
         class GestionReservation {
             + reserverBillet(billet: Billet): void
             + afficherReservations(): void
+            + annulerReservation(billet : Billet)
         }
 
         class GestionEmployes {
             + ajouterEmploye(employe: Employe): void
             + afficherEmployes(): void
+            + supprimerEmploye(employe : Employe): void
         }
 }
 @enduml
