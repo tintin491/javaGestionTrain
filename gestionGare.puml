@@ -10,24 +10,27 @@ package "Model" {
         - boolean enService
         + Train(id: String, type: String, capacite: int)
         + mettreHorsService(): void
+        + remettreEnService(): void
+        + isEnService() : boolean
         + toString(): String
     }
 
     class Gare {
         - String nom
         - String adresse
-        - List<Train> trains
+        - ArrayList<Train> trains
         + ajouterTrain(train: Train): void
-        + listerTrains(): List<Train>
+        + listerTrains(): ArrayList<Train>
+        + trouverTrainParId(String id)
     }
 
     class Passager {
         - String nom
         - String prenom
         - String email
-        - List<Billet> historiqueBillets
+        - ArrayList<Billet> historiqueBillets
         + ajouterBillet(billet: Billet): void
-        + annulerBillet(billet: Biller): void
+        + annulerBillet(billet: Billet): void
         + toString(): String
     }
 
@@ -85,7 +88,10 @@ package "Model" {
 }
 
 package "View"{
-
+    class MainView{
+        MainView()
+        Show()
+    }
 
 }
 
