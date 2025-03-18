@@ -1,4 +1,4 @@
-package model.employe;
+package models.employe;
 
 public class Guichetier {
 }

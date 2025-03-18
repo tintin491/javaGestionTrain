@@ -32,6 +32,9 @@ package "Model" {
         + ajouterBillet(billet: Billet): void
         + annulerBillet(billet: Billet): void
         + toString(): String
+        + getPrenom():String
+        + getNom() : String
+        + getEmail() : String
     }
 
     class Billet {
@@ -39,8 +42,15 @@ package "Model" {
         - Voyage voyage
         - Passager passager
         - double prix
+        - isAnnuler
         + Billet(id: String, voyage: Voyage, passager: Passager, prix: double)
         + toString(): String
+        + annuler() : void
+        + isAnnuler() : boolean
+        + getPrix() : double
+        + getPassager() : Passager
+        + getVoyage() : Voyage*
+        + getId() : String
     }
 
     class Voyage {
