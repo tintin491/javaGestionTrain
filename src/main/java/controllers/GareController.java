@@ -2,7 +2,6 @@ package controllers;
 
 import models.Gare;
 import services.GareService;
-import services.TrainService;
 
 import java.util.ArrayList;
 
@@ -15,48 +14,43 @@ public class GareController {
     }
 
     /**
-     * Fonction qui récupére toutes les gares avec leur trains
-     * @param trainService le service des train
+     * Fonction qui récupére toutes les gares
      * @return une liste de gare
      */
-    public ArrayList<Gare> getAllGareWithTrain(TrainService trainService) {
-        return gareService.getAllGaresWithTrain(trainService);
-    }
-
-    /**
-     * Fonction qui recherche une gare en fonction de son identifiant avec ces trains
-     * @param id identiant de la gare
-     * @param trainService le service des train
-     * @return une gare ou NUll
-     */
-    public Gare getGAreByIdWithTrain(TrainService trainService, String id) {
-        return gareService.getGareByIdWithTrain(trainService, id);
-    }
-
-    /**
-     * Fonction qui récupére toutes les gares avec leur trains
-     * @return une liste de gare
-     */
-    public ArrayList<Gare> getAllGare() {
+    public ArrayList<Gare> getAllGares() {
         return gareService.getAllGares();
     }
 
     /**
-     * Fonction qui recherche une gare en fonction de son identifiant avec ces trains
+     * Fonction qui recherche une gare en fonction de son identifiant
      * @param id identiant de la gare
      * @return une gare ou NUll
      */
-    public Gare getGAreByIdWithTrain( String id) {
-        return gareService.getGareById(id);
+    public Gare getGareByI(String id) {
+        return gareService.getGareByI(id);
     }
 
     /**
-     * Fonction pour rajouter une gare.
-     * @param nom de la gare
-     * @param adresse de la gare
+     * Fonction pour ajouter une gare.
+     * @param gare Gare à ajouter
      */
-    public void addGare(String nom, String adresse) {
-        Gare newGare = new Gare(nom, adresse);
-        gareService.addGare(newGare);
+    public void addGare(Gare gare) {
+        gareService.addGare(gare);
+    }
+
+    /**
+     * Fonction pour update une gare.
+     * @param gare Gare à update
+     */
+    public void updateGare(Gare gare) {
+        gareService.updateGare(gare);
+    }
+
+    /**
+     * Fonction pour supprimer une gare.
+     * @param gare Gare à supprimer
+     */
+    public void deleteGare(Gare gare) {
+        gareService.deleteGare(gare);
     }
 }

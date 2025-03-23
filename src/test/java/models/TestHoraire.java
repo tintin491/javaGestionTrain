@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 public class TestHoraire {
     @Test
-    public void TestCreationHoraire() {
+    public void testCreationHoraire() {
         // Todo
     }
 }

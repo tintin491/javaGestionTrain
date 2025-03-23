@@ -34,6 +34,7 @@ public class Billet {
     /**
      * Constructeur de la classe Billet.
      * Permet de créer un billet avec les informations spécifiées.
+     * Constructeur pour la création de nouveau billet
      *
      * @param voyage Le voyage lié au billet.
      * @param passager Le passager lié au billet.
@@ -44,11 +45,28 @@ public class Billet {
         if (prix < 0) {
             throw new PrixBilletInvalidException("La prix doit être supérieure ou égale à zéro.");
         }
-        this.id = String.valueOf(java.util.UUID.randomUUID());
         this.voyage = voyage;
         this.passager = passager;
         this.prix = prix;
         this.isAnnuler = false;
+    }
+
+    /**
+     * Constructeur de la classe Billet.
+     * Permet de créer un billet avec les informations spécifiées.
+     *
+     * @param id identifiant du biller
+     * @param voyage Le voyage lié au billet.
+     * @param passager Le passager lié au billet.
+     * @param prix Le prix du billet
+     * @param isAnnuler Indique si le billet est annuler ou non
+     */
+    public Billet(String id, Voyage voyage, Passager passager, double prix, boolean isAnnuler){
+        this.id = id;
+        this.voyage = voyage;
+        this.passager = passager;
+        this.prix = prix;
+        this.isAnnuler = isAnnuler;
     }
 
     /**
@@ -77,19 +95,6 @@ public class Billet {
      */
     public double getPrix() {
         return prix;
-    }
-
-    /**
-     * @return Une chaîne de caractères représentant le billet.
-     */
-    @Override
-    public String toString() {
-        return "Billet{" +
-                "id='" + id + '\'' +
-                ", voyage=" + voyage +
-                ", passager=" + passager +
-                ", prix=" + prix +
-                '}';
     }
 
     /**

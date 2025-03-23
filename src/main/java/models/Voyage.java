@@ -5,10 +5,21 @@ import exceptions.VoyageHoraireException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+/**
+ * La classe Voyage représente un voyage de train
+ * Elle contient des informations sur l'identifiant ,
+ * les horaire, , le passager et le prix  du billet.
+ */
 public class Voyage {
+
+    /**
+     * L'identifiant du billet.
+     */
+    private String id;
+
     Horaire horaireDepart;
     Horaire horaireArrivee;
-    private ArrayList<Horaire> listeHoraire;
+    ArrayList<Horaire> listeHoraire;
 
     public Voyage(Horaire horaireDepart, Horaire horaireArrivee, ArrayList<Horaire> listeHoraire) throws VoyageHoraireException {
         if(horaireDepart.getHeure().isBefore(horaireArrivee.getHeure()) | (horaireDepart.getTrain() != horaireArrivee.getTrain() && listeHoraire.isEmpty())){
@@ -39,6 +50,9 @@ public class Voyage {
         return horaireArrivee.getHeure();
     }
 
+    public String getId() {
+        return id;
+    }
 
     @Override
     public String toString() {

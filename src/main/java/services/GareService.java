@@ -1,23 +1,11 @@
 package services;
 
-import exceptions.CapaciteTrainInvalidException;
+import database.DatabaseConnection;
 import models.Gare;
-import models.Train;
-
 import java.sql.*;
 import java.util.ArrayList;
 
 public class GareService {
-    private static final String DB_URL = "jdbc:sqlite:gestion_gare.db"; // Base de données SQLite
-    private Connection connection;
-
-    public GareService() {
-        try {
-            connection = DriverManager.getConnection(DB_URL);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Fonction pour rajouter une gare.
@@ -25,7 +13,7 @@ public class GareService {
      */
     public void addGare(Gare gare) {
         String sql = "INSERT INTO Gare (nom, adresse) VALUES (?, ?)";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
             pstmt.setString(    1,  gare.getNom());
             pstmt.setString(2, gare.getAdresse());
             pstmt.executeUpdate();
@@ -35,72 +23,52 @@ public class GareService {
     }
 
     /**
-     * Fonction qui recherche un gare en fonction de son identifiant
-     * @param id identiant de la gare
-     * @param trainService Le service du train
-     * @return un Train ou NUll
+     * Fonction pour update une gare.
+     * @param gare Gare à update
      */
-    public Gare getGareByIdWithTrain(TrainService trainService, String id) {
-        Gare gare;
-        String sql = "SELECT id, nom, adresse FROM Gare WHERE id = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, id);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                gare = new Gare(rs.getString("nom"), rs.getString("adresse"));
-                ArrayList<Train> trains = trainService.getTrainByGare(gare.getId());
-                gare.setTrains(trains);
-            }
-        } catch (SQLException | CapaciteTrainInvalidException e) {
+    public void updateGare(Gare gare) {
+        String sql = "UPDATE Gare SET nom = ?, adresse = ? WHERE id = ?";
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
+            pstmt.setString(1, gare.getNom());
+            pstmt.setString(2, gare.getAdresse());
+            pstmt.setString(3, gare.getId());
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     /**
-     * Fonction qui recherche un gare en fonction de son identifiant
-     * @param id identiant de la gare
-     * @return un Train ou NUll
+     * Fonction pour supprimer une gare.
+     * @param gare Gare à supprimer
      */
-    public Gare getGareById(String id) {
-        String sql = "SELECT id, nom, adresse FROM Gare WHERE id = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, id);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                new Gare(rs.getString("nom"), rs.getString("adresse"));
-
-            }
-        } catch (SQLException e ) {
+    public void deleteGare(Gare gare) {
+        String sql = "DELETE FROM Gare WHERE id = ?";
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
+            pstmt.setString(1, gare.getId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     /**
-     * Fonction qui récupére toutes les gares avec leurs trains
-     * @param trainService service du train
-     * @return une liste de gare
+     * Fonction qui recherche une gare en fonction de son identifiant
+     * @param id identiant de la gare
+     * @return un Gare ou NUll
      */
-    public ArrayList<Gare> getAllGaresWithTrain(TrainService trainService) {
-        ArrayList<Gare> gares = new ArrayList<>();
-        String sql = "SELECT id, nom, adresse FROM Gare";
-        try (Statement stmt = connection.createStatement()) {
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                Gare gare = new Gare(
-                        rs.getString("id"),
-                        rs.getString("nom"),
-                        rs.getString("adresse"));
-                ArrayList<Train> trains = trainService.getTrainByGare(gare.getId());
-                gares.add(gare);
-
-                gare.setTrains(trains);
+    public Gare getGareByI(String id) {
+        String sql =  "SELECT id, nom, adresse FROM Gare where id = ?";
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
+            pstmt.setString(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new Gare(rs.getString("id"), rs.getString("nom"), rs.getString("adresse"));
             }
-        } catch (SQLException | CapaciteTrainInvalidException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return gares;
+        return null;
     }
 
     /**
@@ -110,18 +78,18 @@ public class GareService {
     public ArrayList<Gare> getAllGares() {
         ArrayList<Gare> gares = new ArrayList<>();
         String sql = "SELECT id, nom, adresse FROM Gare";
-        try (Statement stmt = connection.createStatement()) {
+        try (Statement stmt = DatabaseConnection.getConnection().createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
-                gares.add(new Gare(
+                Gare gare = new Gare(
                         rs.getString("id"),
                         rs.getString("nom"),
-                        rs.getString("adresse")));
+                        rs.getString("adresse"));
+                gares.add(gare);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return gares;
     }
-
 }

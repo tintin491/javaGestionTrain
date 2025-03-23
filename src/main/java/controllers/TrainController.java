@@ -1,6 +1,4 @@
 package controllers;
-
-import exceptions.CapaciteTrainInvalidException;
 import models.Train;
 import services.TrainService;
 
@@ -32,14 +30,27 @@ public class TrainController {
     }
 
     /**
-     * Fonction pour rajouter un train.
-     * @param type Le type du train.
-     * @param capacite La capacité du train.
-     * @param enService Indique si le train est en service ou non.
-     */
-    public void addTrain(String type, int capacite, boolean enService) throws CapaciteTrainInvalidException {
-        Train newTrain = new Train(type, capacite, enService);
-        trainService.addTrain(newTrain);
+     * Fonction pour ajouter un train.
+     * @param train Train à ajouter
+     * */
+    public void addTrain(Train train) {
+        trainService.addTrain(train);
+    }
+
+    /**
+     * Fonction pour update un train.
+     * @param train Train à update
+     * */
+    public void updateTrain(Train train){
+        trainService.updateTrain(train);
+    }
+
+    /**
+     * Fonction pour supprimer un train.
+     * @param train Train à supprimer
+     * */
+    public void deleteTrain(Train train){
+        trainService.deleteTrain(train);
     }
 }
 

@@ -34,29 +34,24 @@ public class DatabaseManager {
                     + "enService BOOLEAN NOT NULL)";
             stmt.execute(createTrainTable);
 
-            String createTrainGareTable = "CREATE TABLE IF NOT EXISTS TrainGare ("
-                    + "gare_id INTEGER,"
-                    + "train_id INTEGER,"
-                    + "PRIMARY KEY (gare_id, train_id),"
-                    + "FOREIGN KEY (gare_id) REFERENCES Gare(id),"
-                    + "FOREIGN KEY (train_id) REFERENCES Train(id),";
-            stmt.execute(createTrainGareTable);
-
             String createGareTable = "CREATE TABLE IF NOT EXISTS Gare ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + "nom TEXT NOT NULL, "
                     + "adresse TEXT NOT NULL)";
             stmt.execute(createGareTable);
 
+            String createHoraireTable =  "CREATE TABLE IF NOT EXISTS Horaire ("
+                    + "gare_id INTEGER NOT NULL,"
+                    + "train_id INTEGER NOT NULL,"
+                    + "date_arrive TEXT NOT NULL,"
+                    + "date_depart TEXT NOT NULL,"
+                    + "PRIMARY KEY (gare_id, train_id,date_arrive),"
+                    + "FOREIGN KEY (gare_id) REFERENCES Gare(id),"
+                    + "FOREIGN KEY (train_id) REFERENCES Train(id))";
+            stmt.execute(createHoraireTable);
+
             String createVoyageTable = "CREATE TABLE IF NOT EXISTS Voyage ("
-                    + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + "trainId TEXT NOT NULL, "
-                    + "gareDepartId INTEGER NOT NULL, "
-                    + "gareArriveeId INTEGER NOT NULL, "
-                    + "horaire DATETIME NOT NULL, "
-                    + "FOREIGN KEY(trainId) REFERENCES Train(id), "
-                    + "FOREIGN KEY(gareDepartId) REFERENCES Gare(id), "
-                    + "FOREIGN KEY(gareArriveeId) REFERENCES Gare(id))";
+                    + "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL )";
             stmt.execute(createVoyageTable);
 
             String createPassagerTable = "CREATE TABLE IF NOT EXISTS Passager ("
@@ -71,6 +66,7 @@ public class DatabaseManager {
                     + "passagerId INTEGER NOT NULL, "
                     + "voyageId INTEGER NOT NULL, "
                     + "prix DECIMAL(10, 2) NOT NULL, "
+                    + "isAnnuler BOOLEAN NOT NULL,"
                     + "FOREIGN KEY(passagerId) REFERENCES Passager(id), "
                     + "FOREIGN KEY(voyageId) REFERENCES Voyage(id))";
             stmt.execute(createBilletTable);

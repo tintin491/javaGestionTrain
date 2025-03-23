@@ -37,12 +37,13 @@ public class Train {
      * @param type Le type du train.
      * @param capacite La capacité du train.
      * @param enService Indique si le train est en service ou non.
+     * @throws CapaciteTrainInvalidException Si la capacité est inférieure ou égale à zéro
      */
-    public Train( String id, String type, int capacite, boolean enService){
-        this.id = id;
-        this.type = type;
-        this.capacite = capacite;
-        this.enService = enService;
+    public Train( String id, String type, int capacite, boolean enService)throws CapaciteTrainInvalidException {
+        setId(id);
+        setType(type);
+        setCapacite(capacite);
+        setEnService(enService);
     }
 
     /**
@@ -113,5 +114,14 @@ public class Train {
      */
     public void setEnService(boolean enService) {
         this.enService = enService;
+    }
+
+
+    /**
+     * Modifie la l'identifiant  du train
+     * @param id du train
+     */
+    private void setId(String id) {
+        this.id = id;
     }
 }

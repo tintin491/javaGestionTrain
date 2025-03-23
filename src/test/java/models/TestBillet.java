@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 public class TestBillet {
 
     @Test
-    public void TestCreationBillet(){
+    public void testCreationBillet(){
         //Todo
     }
 }
