@@ -45,12 +45,4 @@ public class GareController {
     public void updateGare(Gare gare) {
         gareService.updateGare(gare);
     }
-
-    /**
-     * Fonction pour supprimer une gare.
-     * @param gare Gare à supprimer
-     */
-    public void deleteGare(Gare gare) {
-        gareService.deleteGare(gare);
-    }
 }

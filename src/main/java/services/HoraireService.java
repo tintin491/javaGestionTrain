@@ -70,9 +70,43 @@ public class HoraireService {
     }
 
     /**
-     * Fonction qui recherche une liste d'horaire en fonction del'identifiant d'une gare
-     * @param idGare identiant de la gare
+     * Fonction qui recherche la liste d'horaire
      * @return une ArrayList<Horaire>
+     */
+    public ArrayList<Horaire> getAllHoraire () {
+        ArrayList<Horaire> horaires = new ArrayList<>();
+        String query = "SELECT H.gare_id, H.train_id, H.date_arrive, H.date_depart, " +
+                "T.capacite, T.type, T.enService, G.nom, G.adresse" +
+                "G.nom AS gare_nom, G.adresse AS gare_adresse," +
+                "T.nom AS train_nom, T.type AS train_type" +
+                "FROM Horaire H" +
+                "JOIN Gare G ON H.gare_id = G.id" +
+                "JOIN Train T ON H.train_id = T.id";
+
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                LocalDateTime dateArrivee = rs.getTimestamp("date_arrive").toLocalDateTime();
+                LocalDateTime dateDepart = rs.getTimestamp("date_depart").toLocalDateTime();
+
+                Train train = new Train(rs.getString("train_id"),rs.getString("type"), rs.getInt("capacite"), rs.getBoolean("enService"));
+                Gare gare = new Gare(rs.getString("gare_id"), rs.getString("nom"), rs.getString("adresse"));
+                Horaire horaire = new Horaire(train,gare, dateArrivee, dateDepart);
+                horaires.add(horaire);
+            }
+
+        } catch (SQLException | CapaciteTrainInvalidException e) {
+            System.err.println("Erreur lors de la récupération des horaires: " + e.getMessage());
+        }
+        return horaires;
+    }
+
+
+    /**
+     * Fonction qui recherche une liste d'horaire en fonction de l'identifiant d'une gare
+     * @param idGare identiant de la gare
+     * @return ArrayList<Horaire>
      */
     public ArrayList<Horaire> getHoraireByGareId (String idGare) {
         ArrayList<Horaire> horaires = new ArrayList<>();
@@ -81,8 +115,8 @@ public class HoraireService {
                        "G.nom AS gare_nom, G.adresse AS gare_adresse," +
                        "T.nom AS train_nom, T.type AS train_type" +
                        "FROM Horaire H" +
-                       "JOIN Gare G ON H.gare_id = G.id\n" +
-                       "JOIN Train T ON H.train_id = T.id\n" +
+                       "JOIN Gare G ON H.gare_id = G.id" +
+                       "JOIN Train T ON H.train_id = T.id" +
                        "WHERE H.gare_id = ?";
 
         try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
@@ -103,8 +137,6 @@ public class HoraireService {
         } catch (SQLException | CapaciteTrainInvalidException e) {
             System.err.println("Erreur lors de la récupération des horaires: " + e.getMessage());
         }
-
-        // Retourner la liste des horaires
         return horaires;
     }
 
@@ -114,19 +146,113 @@ public class HoraireService {
      * @return une ArrayList<Horaire>
      */
     public ArrayList<Horaire> getHoraireByTrainId (String idTrain) {
-        //Todo
-        return null;
+        ArrayList<Horaire> horaires = new ArrayList<>();
+        String query = "SELECT H.gare_id, H.train_id, H.date_arrive, H.date_depart, " +
+                "T.capacite, T.type, T.enService, G.nom, G.adresse" +
+                "G.nom AS gare_nom, G.adresse AS gare_adresse," +
+                "T.nom AS train_nom, T.type AS train_type" +
+                "FROM Horaire H" +
+                "JOIN Gare G ON H.gare_id = G.id\n" +
+                "JOIN Train T ON H.train_id = T.id\n" +
+                "WHERE H.train_id = ?";
+
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
+            pstmt.setString(1, idTrain);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                LocalDateTime dateArrivee = rs.getTimestamp("date_arrive").toLocalDateTime();
+                LocalDateTime dateDepart = rs.getTimestamp("date_depart").toLocalDateTime();
+
+                Train train = new Train(rs.getString("train_id"),rs.getString("type"), rs.getInt("capacite"), rs.getBoolean("enService"));
+                Gare gare = new Gare(rs.getString("gare_id"), rs.getString("nom"), rs.getString("adresse"));
+                Horaire horaire = new Horaire(train,gare, dateArrivee, dateDepart);
+                horaires.add(horaire);
+            }
+
+        } catch (SQLException | CapaciteTrainInvalidException e) {
+            System.err.println("Erreur lors de la récupération des horaires: " + e.getMessage());
+        }
+        return horaires;
     }
 
     /**
-     * Fonction qui recherche une liste d'horaire en fonction d'une date
-     * @param date la date
+     * Fonction qui recherche une liste d'horaire en fonction d'une date d'arrivé
+     * @param date la date d'arrivee
      * @return ArrayList<Horaire>
      */
-    public ArrayList<Horaire> getHoraireByDate (LocalDateTime date) {
-        //Todo
-        return null;
+    public ArrayList<Horaire> getHoraireByDateArrivee (LocalDateTime date) {
+        ArrayList<Horaire> horaires = new ArrayList<>();
+        String query = "SELECT H.gare_id, H.train_id, H.date_arrive, H.date_depart, " +
+                "T.capacite, T.type, T.enService, G.nom, G.adresse" +
+                "G.nom AS gare_nom, G.adresse AS gare_adresse," +
+                "T.nom AS train_nom, T.type AS train_type" +
+                "FROM Horaire H" +
+                "JOIN Gare G ON H.gare_id = G.id\n" +
+                "JOIN Train T ON H.train_id = T.id\n" +
+                "WHERE H.date_arrive = ?";
+
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
+            Timestamp heureArriveeTimestamp = Timestamp.valueOf(date);
+            pstmt.setTimestamp(1,heureArriveeTimestamp);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                LocalDateTime dateArrivee = rs.getTimestamp("date_arrive").toLocalDateTime();
+                LocalDateTime dateDepart = rs.getTimestamp("date_depart").toLocalDateTime();
+
+                Train train = new Train(rs.getString("train_id"),rs.getString("type"), rs.getInt("capacite"), rs.getBoolean("enService"));
+                Gare gare = new Gare(rs.getString("gare_id"), rs.getString("nom"), rs.getString("adresse"));
+                Horaire horaire = new Horaire(train,gare, dateArrivee, dateDepart);
+                horaires.add(horaire);
+            }
+
+        } catch (SQLException | CapaciteTrainInvalidException e) {
+            System.err.println("Erreur lors de la récupération des horaires: " + e.getMessage());
+        }
+        return horaires;
     }
+
+    /**
+     * Fonction qui recherche une liste d'horaire en fonction d'une date de départ
+     * @param date la date de départ
+     * @return ArrayList<Horaire>
+     */
+    public ArrayList<Horaire> getHoraireByDateDepart (LocalDateTime date) {
+        ArrayList<Horaire> horaires = new ArrayList<>();
+        String query = "SELECT H.gare_id, H.train_id, H.date_arrive, H.date_depart, " +
+                "T.capacite, T.type, T.enService, G.nom, G.adresse" +
+                "G.nom AS gare_nom, G.adresse AS gare_adresse," +
+                "T.nom AS train_nom, T.type AS train_type" +
+                "FROM Horaire H" +
+                "JOIN Gare G ON H.gare_id = G.id" +
+                "JOIN Train T ON H.train_id = T.id" +
+                "WHERE H.date_depart = ?";
+
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
+            Timestamp heureDepartTimestamp = Timestamp.valueOf(date);
+            pstmt.setTimestamp(1,heureDepartTimestamp);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                LocalDateTime dateArrivee = rs.getTimestamp("date_arrive").toLocalDateTime();
+                LocalDateTime dateDepart = rs.getTimestamp("date_depart").toLocalDateTime();
+
+                Train train = new Train(rs.getString("train_id"),rs.getString("type"), rs.getInt("capacite"), rs.getBoolean("enService"));
+                Gare gare = new Gare(rs.getString("gare_id"), rs.getString("nom"), rs.getString("adresse"));
+                Horaire horaire = new Horaire(train,gare, dateArrivee, dateDepart);
+                horaires.add(horaire);
+            }
+
+        } catch (SQLException | CapaciteTrainInvalidException e) {
+            System.err.println("Erreur lors de la récupération des horaires: " + e.getMessage());
+        }
+        return horaires;
+    }
+
 
     /**
      * Fonction qui recherche une liste d'horaire en fonction de l'identifiant d'un train et d'une gare
@@ -135,29 +261,34 @@ public class HoraireService {
      * @return une ArrayList<Horaire>
      */
     public ArrayList<Horaire> getHoraireByTrainIdAndGareId (String idTrain, String idGare) {
-        //Todo
-        return null;
-    }
+        ArrayList<Horaire> horaires = new ArrayList<>();
+        String query = "SELECT H.gare_id, H.train_id, H.date_arrive, H.date_depart, " +
+                "T.capacite, T.type, T.enService, G.nom, G.adresse" +
+                "G.nom AS gare_nom, G.adresse AS gare_adresse," +
+                "T.nom AS train_nom, T.type AS train_type" +
+                "FROM Horaire H" +
+                "JOIN Gare G ON H.gare_id = G.id" +
+                "JOIN Train T ON H.train_id = T.id" +
+                "WHERE H.date_arrive = ? ANS H.train_id = ?";
 
-    /**
-     * Fonction qui recherche une liste d'horaire en fonction de l'identifiant d'un train et d'une gare
-     * @param idTrain identiant du train
-     * @param date la date
-     * @return une ArrayList<Horaire>
-     */
-    public ArrayList<Horaire> getHoraireByTrainIdAndDate (String idTrain, LocalDateTime date) {
-        //Todo
-        return null;
-    }
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
+            ResultSet rs = pstmt.executeQuery();
+            pstmt.setString(2, idGare);
+            pstmt.setString(1, idTrain);
 
-    /**
-     * Fonction qui recherche une liste d'horaire en fonction de l'identifiant d'un train et d'une gare
-     * @param idGare identiant de la gare
-     * @param date la date
-     * @return une ArrayList<Horaire>
-     */
-    public ArrayList<Horaire> getHoraireByGareIdAndDate (String idGare, LocalDateTime date) {
-        //Todo
-        return null;
+            while (rs.next()) {
+                LocalDateTime dateArrivee = rs.getTimestamp("date_arrive").toLocalDateTime();
+                LocalDateTime dateDepart = rs.getTimestamp("date_depart").toLocalDateTime();
+
+                Train train = new Train(rs.getString("train_id"),rs.getString("type"), rs.getInt("capacite"), rs.getBoolean("enService"));
+                Gare gare = new Gare(rs.getString("gare_id"), rs.getString("nom"), rs.getString("adresse"));
+                Horaire horaire = new Horaire(train,gare, dateArrivee, dateDepart);
+                horaires.add(horaire);
+            }
+
+        } catch (SQLException | CapaciteTrainInvalidException e) {
+            System.err.println("Erreur lors de la récupération des horaires: " + e.getMessage());
+        }
+        return horaires;
     }
 }
