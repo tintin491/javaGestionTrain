@@ -44,13 +44,5 @@ public class TrainController {
     public void updateTrain(Train train){
         trainService.updateTrain(train);
     }
-
-    /**
-     * Fonction pour supprimer un train.
-     * @param train Train à supprimer
-     * */
-    public void deleteTrain(Train train){
-        trainService.deleteTrain(train);
-    }
 }
 

@@ -12,8 +12,8 @@ public class GareService {
      * @param gare Gare à ajouter
      */
     public void addGare(Gare gare) {
-        String sql = "INSERT INTO Gare (nom, adresse) VALUES (?, ?)";
-        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
+        String query = "INSERT INTO Gare (nom, adresse) VALUES (?, ?)";
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
             pstmt.setString(    1,  gare.getNom());
             pstmt.setString(2, gare.getAdresse());
             pstmt.executeUpdate();
@@ -27,26 +27,12 @@ public class GareService {
      * @param gare Gare à update
      */
     public void updateGare(Gare gare) {
-        String sql = "UPDATE Gare SET nom = ?, adresse = ? WHERE id = ?";
-        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
+        String query = "UPDATE Gare SET nom = ?, adresse = ? WHERE id = ?";
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
             pstmt.setString(1, gare.getNom());
             pstmt.setString(2, gare.getAdresse());
             pstmt.setString(3, gare.getId());
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Fonction pour supprimer une gare.
-     * @param gare Gare à supprimer
-     */
-    public void deleteGare(Gare gare) {
-        String sql = "DELETE FROM Gare WHERE id = ?";
-        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
-            pstmt.setString(1, gare.getId());
-            pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,8 +44,8 @@ public class GareService {
      * @return un Gare ou NUll
      */
     public Gare getGareByI(String id) {
-        String sql =  "SELECT id, nom, adresse FROM Gare where id = ?";
-        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
+        String query =  "SELECT id, nom, adresse FROM Gare where id = ?";
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
             pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -77,9 +63,9 @@ public class GareService {
      */
     public ArrayList<Gare> getAllGares() {
         ArrayList<Gare> gares = new ArrayList<>();
-        String sql = "SELECT id, nom, adresse FROM Gare";
+        String query = "SELECT id, nom, adresse FROM Gare";
         try (Statement stmt = DatabaseConnection.getConnection().createStatement()) {
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 Gare gare = new Gare(
                         rs.getString("id"),

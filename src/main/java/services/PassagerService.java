@@ -12,8 +12,8 @@ public class PassagerService {
      * @param passager Passager à ajouter
      */
     public void addPassager(Passager passager) {
-        String sql = "INSERT INTO Passager (nom, prenom, email) VALUES (?, ?, ?)";
-        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
+        String query = "INSERT INTO Passager (nom, prenom, email) VALUES (?, ?, ?)";
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
             pstmt.setString(1, passager.getNom());
             pstmt.setString(2, passager.getPrenom());
             pstmt.setString(3, passager.getEmail());
@@ -28,8 +28,8 @@ public class PassagerService {
      * @param passager Passager à update
      */
     public void updatePassager(Passager passager) {
-        String sql = "UPDATE Passager SET nom = ?, prenom = ?, email = ? WHERE id = ?";
-        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
+        String query = "UPDATE Passager SET nom = ?, prenom = ?, email = ? WHERE id = ?";
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
             pstmt.setString(1, passager.getNom());
             pstmt.setString(2, passager.getPrenom());
             pstmt.setString(3, passager.getEmail());
@@ -45,8 +45,8 @@ public class PassagerService {
      * @param passager Passager à supprimer
      */
     public void deletePassager(Passager passager) {
-        String sql = "DELETE FROM Passager WHERE id = ?";
-        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
+        String query = "DELETE FROM Passager WHERE id = ?";
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
             pstmt.setString(1, passager.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -60,9 +60,9 @@ public class PassagerService {
      */
     public ArrayList<Passager> getAllPassagers() {
         ArrayList<Passager> passagers = new ArrayList<>();
-        String sql = "SELECT * FROM Passager";
+        String query = "SELECT * FROM Passager";
         try (Statement stmt = DatabaseConnection.getConnection().createStatement()) {
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 Passager passager = new Passager(
                         rs.getString("id"),
@@ -84,9 +84,9 @@ public class PassagerService {
      * @return un Train ou NUll
      */
     public Passager getPassagerById(String id) {
-        String sql = "SELECT * FROM Passager WHERE id = ?";
+        String query = "SELECT * FROM Passager WHERE id = ?";
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {

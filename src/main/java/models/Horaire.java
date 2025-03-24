@@ -2,7 +2,6 @@ package models;
 
 import java.time.LocalDateTime;
 
-
 /**
  * La classe Horaire représente le liens entre un gare et un train à un date/heure
  * Elle contient des informations sur
@@ -20,9 +19,14 @@ public class Horaire {
     private Gare gare;
 
     /**
-     * Date/heure.
+     * Date/heure d'arrivé.
      */
-    private LocalDateTime heure;
+    private LocalDateTime heureArrivee;
+
+    /**
+     * Date/heure de départ.
+     */
+    private LocalDateTime heureDepart;
 
     /**
      * Constructeur de la classe Horaire.
@@ -30,12 +34,14 @@ public class Horaire {
      *
      * @param train Le train.
      * @param gare La Gare.
-     * @param heure L'heure
+     * @param heureArrivee heure d'arrivé
+     * @param heureDepart heure de départ
      */
-    public Horaire(Train train, Gare gare, LocalDateTime heure) {
-        this.train = train;
-        this.gare = gare;
-        this.heure = heure;
+    public Horaire(Train train, Gare gare, LocalDateTime heureArrivee, LocalDateTime heureDepart) {
+        setTrain(train);
+        setGare(gare);
+        setHeureArrivee(heureArrivee);
+        setHeureDepart(heureDepart);
     }
 
     /**
@@ -69,17 +75,32 @@ public class Horaire {
     }
 
     /**
-     * @return L'heure lié à l'horaire.
+     * @return L'heure d'arrivé.
      */
-    public LocalDateTime getHeure() {
-        return heure;
+    public LocalDateTime getHeureArrivee() {
+        return heureArrivee;
+    }
+
+    /**
+     * @return L'heure d'arrivé.
+     */
+    public LocalDateTime getHeureDepart() {
+        return heureDepart;
     }
 
     /**
      * Modifie la datetime
-     * @param heure lié
+     * @param heureArrivee lié
      */
-    public void setHeure(LocalDateTime heure) {
-        this.heure = heure;
+    public void setHeureArrivee(LocalDateTime heureArrivee) {
+        this.heureArrivee = heureArrivee;
+    }
+
+    /**
+     * Modifie la datetime
+     * @param heureDepart lié
+     */
+    public void setHeureDepart(LocalDateTime heureDepart) {
+        this.heureDepart = heureDepart;
     }
 }

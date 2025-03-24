@@ -13,8 +13,8 @@ public class TrainService {
      * @param train Train à ajouter
      */
     public void addTrain(Train train) {
-        String sql = "INSERT INTO Train (text_type, capacite, enService) VALUES (?, ?, ?)";
-        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
+        String query = "INSERT INTO Train (text_type, capacite, enService) VALUES (?, ?, ?)";
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
             pstmt.setString(    1, train.getType());
             pstmt.setInt(2, train.getCapacite());
             pstmt.setBoolean(3, train.isEnService());
@@ -29,26 +29,12 @@ public class TrainService {
      * @param train Train à update
      */
     public void updateTrain(Train train) {
-        String sql = "UPDATE Train SET text_type = ?, capacite = ?, enServie = ? WHERE id = ?";
-        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
+        String query = "UPDATE Train SET text_type = ?, capacite = ?, enServie = ? WHERE id = ?";
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
             pstmt.setString(1, train.getType());
             pstmt.setInt(2, train.getCapacite());
             pstmt.setBoolean(3, train.isEnService());
             pstmt.setString(4, train.getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Fonction pour supprimer un train.
-     * @param train Train à supprimer
-     */
-    public void deleteTrain(Train train) {
-        String sql = "DELETE FROM Train WHERE id = ?";
-        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
-            pstmt.setString(    1, train.getId());
-            pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -60,8 +46,8 @@ public class TrainService {
      * @return un Train ou NUll
      */
     public Train getTrainById(String id) {
-        String sql = "SELECT * FROM Train WHERE id = ?";
-        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
+        String query = "SELECT * FROM Train WHERE id = ?";
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
             pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -84,9 +70,9 @@ public class TrainService {
      */
     public ArrayList<Train> getAllTrains() {
         ArrayList<Train> trains = new ArrayList<>();
-        String sql = "SELECT id, text_type, capacite, enService FROM Train";
+        String query = "SELECT id, text_type, capacite, enService FROM Train";
         try (Statement stmt = DatabaseConnection.getConnection().createStatement()) {
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 trains.add(new Train(
                         rs.getString("id"),

@@ -11,9 +11,9 @@ public class BilletService {
      * Fonction pour ajouter un billet.
      * @param billet biller à ajouter
      */
-    public void addGare(Billet billet) {
-        String sql = "INSERT INTO Billet (passagerId, passagerId, prix, isAnnuler) VALUES (?, ?, ?, true)";
-        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
+    public void addBillet(Billet billet) {
+        String query = "INSERT INTO Billet (passagerId, passagerId, prix, isAnnuler) VALUES (?, ?, ?, true)";
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
             pstmt.setString(    1,  billet.getPassager().getId());
             pstmt.setString(2, billet.getVoyage().getId());
             pstmt.setDouble(3, billet.getPrix());
@@ -27,9 +27,9 @@ public class BilletService {
      * Fonction pour update un billet.
      * @param billet Billet à update
      */
-    public void updateGare(Billet billet) {
-        String sql = "UPDATE Gare SET passagerId  = ?, passagerId = ?, prix = ?, isAnnuler = ? WHERE id = ?";
-        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
+    public void updateBillet(Billet billet) {
+        String query = "UPDATE Gare SET passagerId  = ?, passagerId = ?, prix = ?, isAnnuler = ? WHERE id = ?";
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
             pstmt.setString(    1,  billet.getPassager().getId());
             pstmt.setString(2, billet.getVoyage().getId());
             pstmt.setDouble(3, billet.getPrix());
@@ -45,9 +45,9 @@ public class BilletService {
      * Fonction pour supprimer un billet.
      * @param billet Billet à supprimer
      */
-    public void deleteGare(Billet billet) {
-        String sql = "DELETE FROM Billet WHERE id = ?";
-        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql)) {
+    public void deleteBillet(Billet billet) {
+        String query = "DELETE FROM Billet WHERE id = ?";
+        try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
             pstmt.setString(1, billet.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -70,16 +70,7 @@ public class BilletService {
      * @return une liste de billet
      */
     public ArrayList<Billet> getAllBillet() {
-        ArrayList<Billet> billets = new ArrayList<>();
-        String sql = "SELECT id, nom, adresse FROM Billet";
-        try (Statement stmt = DatabaseConnection.getConnection().createStatement()) {
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                //Todo
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return billets;
+        //Todo
+        return null;
     }
 }

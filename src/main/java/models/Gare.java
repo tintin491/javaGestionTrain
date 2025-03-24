@@ -1,5 +1,7 @@
 package models;
 
+import java.util.ArrayList;
+
 /**
  * La classe Gare représente une gare ferroviaire où les trains partent et arrivent.
  * Elle contient des informations sur
@@ -85,7 +87,6 @@ public class Gare {
     public void setAdresse(String adresse) {
         this.adresse = adresse;
     }
-
 
     /**
      * Modifie la l'identifiant  de la gare
