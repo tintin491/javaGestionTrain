@@ -45,4 +45,5 @@ public class GareController {
     public void updateGare(Gare gare) {
         gareService.updateGare(gare);
     }
+
 }

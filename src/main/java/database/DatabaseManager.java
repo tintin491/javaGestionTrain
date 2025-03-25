@@ -66,7 +66,7 @@ public class DatabaseManager {
                     + "passagerId INTEGER NOT NULL, "
                     + "voyageId INTEGER NOT NULL, "
                     + "prix DECIMAL(10, 2) NOT NULL, "
-                    + "isAnnuler BOOLEAN NOT NULL,"
+                    + "isAnnule BOOLEAN NOT NULL,"
                     + "FOREIGN KEY(passagerId) REFERENCES Passager(id), "
                     + "FOREIGN KEY(voyageId) REFERENCES Voyage(id))";
             stmt.execute(createBilletTable);

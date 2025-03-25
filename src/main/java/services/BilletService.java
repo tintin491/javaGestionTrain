@@ -12,7 +12,7 @@ public class BilletService {
      * @param billet biller à ajouter
      */
     public void addBillet(Billet billet) {
-        String query = "INSERT INTO Billet (passagerId, passagerId, prix, isAnnuler) VALUES (?, ?, ?, true)";
+        String query = "INSERT INTO Billet (passagerId, passagerId, prix, isAnnule) VALUES (?, ?, ?, true)";
         try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
             pstmt.setString(    1,  billet.getPassager().getId());
             pstmt.setString(2, billet.getVoyage().getId());
@@ -28,12 +28,12 @@ public class BilletService {
      * @param billet Billet à update
      */
     public void updateBillet(Billet billet) {
-        String query = "UPDATE Gare SET passagerId  = ?, passagerId = ?, prix = ?, isAnnuler = ? WHERE id = ?";
+        String query = "UPDATE Gare SET passagerId  = ?, passagerId = ?, prix = ?, isAnnule = ? WHERE id = ?";
         try (PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(query)) {
             pstmt.setString(    1,  billet.getPassager().getId());
             pstmt.setString(2, billet.getVoyage().getId());
             pstmt.setDouble(3, billet.getPrix());
-            pstmt.setBoolean(4, billet.isAnnuler());
+            pstmt.setBoolean(4, billet.isAnnule());
             pstmt.setString(    5,  billet.getId());
 
         } catch (SQLException e) {

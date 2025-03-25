@@ -26,9 +26,9 @@ public class Billet {
     private double prix;
 
     /**
-     * Indique si le billet est annuler ou non.
+     * Indique si le billet est annulé ou non.
      */
-    private boolean isAnnuler;
+    private boolean isAnnule;
 
 
     /**
@@ -39,16 +39,16 @@ public class Billet {
      * @param voyage Le voyage lié au billet.
      * @param passager Le passager lié au billet.
      * @param prix Le prix du billet
-     * @throws PrixBilletInvalidException Si le prix est inférieure à zéro.
+     * @throws PrixBilletInvalidException Si le prix est inférieur à zéro.
      */
     public Billet(Voyage voyage, Passager passager, double prix) throws PrixBilletInvalidException{
         if (prix < 0) {
-            throw new PrixBilletInvalidException("La prix doit être supérieure ou égale à zéro.");
+            throw new PrixBilletInvalidException("La prix doit être supérieur ou égal à zéro.");
         }
         this.voyage = voyage;
         this.passager = passager;
         this.prix = prix;
-        this.isAnnuler = false;
+        this.isAnnule = false;
     }
 
     /**
@@ -59,14 +59,14 @@ public class Billet {
      * @param voyage Le voyage lié au billet.
      * @param passager Le passager lié au billet.
      * @param prix Le prix du billet
-     * @param isAnnuler Indique si le billet est annuler ou non
+     * @param isAnnule Indique si le billet est annuler ou non
      */
-    public Billet(String id, Voyage voyage, Passager passager, double prix, boolean isAnnuler){
+    public Billet(String id, Voyage voyage, Passager passager, double prix, boolean isAnnule){
         this.id = id;
         this.voyage = voyage;
         this.passager = passager;
         this.prix = prix;
-        this.isAnnuler = isAnnuler;
+        this.isAnnule = isAnnule;
     }
 
     /**
@@ -102,13 +102,13 @@ public class Billet {
      * Le billet ne pourra plus être utilisé.
      */
     public void annuler() {
-        isAnnuler = true;
+        isAnnule = true;
     }
 
     /**
-     * @return true si le billet est annuler, false sinon.
+     * @return true si le billet est annulé, false sinon.
      */
-    public boolean isAnnuler() {
-        return isAnnuler;
+    public boolean isAnnule() {
+        return isAnnule;
     }
 }

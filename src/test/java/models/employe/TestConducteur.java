@@ -1,4 +1,4 @@
-package models;
+package models.employe;
 
 import org.junit.jupiter.api.Test;
 
